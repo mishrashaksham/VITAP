@@ -33,17 +33,64 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ── SCROLL ANIMATIONS ──
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
+  // ── SCROLL ANIMATIONS (GSAP) ──
+  const initGSAPAnimation = (el, type = 'fade-up') => {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      if (type === 'fade-up') {
+        gsap.fromTo(el, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "power2.out", scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" } });
+      } else {
+        gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.8, ease: "power2.out", scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" } });
       }
-    });
-  }, { threshold: 0.1 });
+    }
+  };
 
-  document.querySelectorAll('.fade-up, .fade-in').forEach(el => observer.observe(el));
+  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+  }
+  
+  document.querySelectorAll('.fade-up').forEach(el => initGSAPAnimation(el, 'fade-up'));
+  document.querySelectorAll('.fade-in').forEach(el => initGSAPAnimation(el, 'fade-in'));
+
+  // ── 3D SCROLL ANIMATIONS ──
+  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    gsap.utils.toArray('.about-image img, .image-grid-item img').forEach(img => {
+      gsap.fromTo(img, 
+        { rotateX: 15, rotateY: -15, scale: 0.9 },
+        {
+          rotateX: 0, rotateY: 0, scale: 1,
+          scrollTrigger: {
+            trigger: img,
+            start: "top 90%",
+            end: "center center",
+            scrub: 1
+          }
+        }
+      );
+    });
+
+    // ── SCROLL GRADIENTS ──
+    let bgLayer = document.querySelector('.bg-gradient-layer');
+    if (!bgLayer) {
+      bgLayer = document.createElement('div');
+      bgLayer.className = 'bg-gradient-layer';
+      document.body.prepend(bgLayer);
+    }
+    
+    if (bgLayer) {
+      const sections = gsap.utils.toArray('section');
+      const colors = ['#0a0a0a', '#150508', '#0d0d0f', '#0a0a0a', '#120b00'];
+      sections.forEach((sec, i) => {
+        const color = colors[i % colors.length];
+        ScrollTrigger.create({
+          trigger: sec,
+          start: "top center",
+          end: "bottom center",
+          onEnter: () => gsap.to(bgLayer, { backgroundColor: color, duration: 1.5, ease: "power2.out" }),
+          onEnterBack: () => gsap.to(bgLayer, { backgroundColor: color, duration: 1.5, ease: "power2.out" })
+        });
+      });
+    }
+  }
 
   // ── ANIMATED COUNTERS ──
   const counterObserver = new IntersectionObserver((entries) => {
@@ -83,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="event-info"><span class="event-cat">${ev.category}</span><h3>${ev.title}</h3><p>${ev.description}</p></div>
             </div>`;
           }).join('');
-          eventsContainer.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+          eventsContainer.querySelectorAll('.fade-up').forEach(el => initGSAPAnimation(el, 'fade-up'));
         }
       })
       .catch(() => { eventsContainer.innerHTML = '<p>Unable to load events.</p>'; });
@@ -116,6 +163,62 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById(tab)?.classList.add('active');
     });
   });
+
+  // ── MAGNETIC CUSTOM CURSOR ──
+  if (window.matchMedia("(pointer: fine)").matches && typeof gsap !== 'undefined') {
+    const cursor = document.createElement('div');
+    cursor.className = 'custom-cursor';
+    document.body.appendChild(cursor);
+
+    const xTo = gsap.quickTo(cursor, "left", { duration: 0.2, ease: "power3" });
+    const yTo = gsap.quickTo(cursor, "top", { duration: 0.2, ease: "power3" });
+
+    document.addEventListener('mousemove', (e) => {
+      xTo(e.clientX);
+      yTo(e.clientY);
+    });
+
+    const updateCursorLinks = () => {
+      // Magnetic pull for buttons
+      document.querySelectorAll('.btn, .nav-cta, .card').forEach(el => {
+        if (!el.dataset.magneticBound) {
+          el.dataset.magneticBound = 'true';
+          
+          el.addEventListener('mousemove', (e) => {
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            gsap.to(el, { x: x * 0.15, y: y * 0.15, duration: 0.3, ease: "power2.out" });
+            cursor.classList.add('link-hover');
+            
+            // Slight magnetic pull of cursor towards center
+            xTo(e.clientX - x * 0.1);
+            yTo(e.clientY - y * 0.1);
+          });
+          
+          el.addEventListener('mouseleave', () => {
+            gsap.to(el, { x: 0, y: 0, duration: 0.6, ease: "elastic.out(1, 0.3)" });
+            cursor.classList.remove('link-hover');
+          });
+        }
+      });
+
+      // Normal hover for other links
+      document.querySelectorAll('a:not(.btn):not(.nav-cta), button:not(.btn):not(.nav-cta)').forEach(el => {
+        if (!el.dataset.cursorBound) {
+          el.dataset.cursorBound = 'true';
+          el.addEventListener('mouseenter', () => cursor.classList.add('link-hover'));
+          el.addEventListener('mouseleave', () => cursor.classList.remove('link-hover'));
+        }
+      });
+    };
+    
+    updateCursorLinks();
+    
+    const cursorObserver = new MutationObserver(() => updateCursorLinks());
+    cursorObserver.observe(document.body, { childList: true, subtree: true });
+  }
 });
 
 // ── TOAST NOTIFICATION ──

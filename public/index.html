@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VIT-AP University — Apply Knowledge, Improve Life!</title>
-  <meta name="description" content="VIT-AP University, Amaravathi — A premier institution offering world-class education in engineering, sciences, business, and humanities.">
+  <meta name="description" content="VIT-AP University, Amaravathi — A premier institution offering world-class education in engineering, sciences, business, and humanities. Experience Digital Convergence.">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -31,18 +31,48 @@
     </div>
   </nav>
 
-  <!-- HERO -->
+  <!-- ═══════════════════════════════════════════ -->
+  <!--  HERO — 3D Digital Convergence             -->
+  <!-- ═══════════════════════════════════════════ -->
   <section class="hero" id="hero">
+    <!-- Three.js Canvas -->
+    <canvas id="heroCanvas"></canvas>
+
+    <!-- Gradient Overlay -->
+    <div class="hero-gradient-overlay"></div>
+
+    <!-- Kinetic Typography Strip -->
+    <div class="kinetic-strip" aria-hidden="true">
+      <span class="kinetic-word kinetic-word--1">INNOVATE</span>
+      <span class="kinetic-word kinetic-word--2">RESEARCH</span>
+      <span class="kinetic-word kinetic-word--3">EXCEL</span>
+    </div>
+
+    <!-- Brutalist Background Type -->
+    <div class="brutalist-type" aria-hidden="true">
+      <span class="brutalist-word" data-text="DIGITAL">DIGITAL</span>
+      <span class="brutalist-word" data-text="CONVERGENCE">CONVERGENCE</span>
+    </div>
+
+    <!-- Main Hero Content -->
     <div class="container">
-      <div class="hero-content">
+      <div class="hero-content hero-content-3d">
         <div class="hero-badge">🏛️ NAAC A++ Accredited University</div>
         <h1>Shape Your Future at <span class="highlight">VIT-AP</span> University</h1>
         <p>Empowering students with world-class education, cutting-edge research, and global opportunities in the heart of Amaravathi, Andhra Pradesh.</p>
         <div class="hero-buttons">
-          <a href="admissions.html" class="btn btn-primary">Apply Now →</a>
-          <a href="academics.html" class="btn btn-outline">Explore Programs</a>
+          <a href="admissions.html" class="btn btn-primary" id="heroApplyBtn">Apply Now →</a>
+          <a href="academics.html" class="btn btn-outline" id="heroExploreBtn">Explore Programs</a>
         </div>
       </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator" aria-hidden="true">
+      <div class="scroll-mouse">
+        <div class="scroll-wheel"></div>
+      </div>
+      <span>Scroll to Explore</span>
     </div>
   </section>
 
@@ -235,6 +265,13 @@
     </div>
   </footer>
 
+  <!-- Three.js (CDN) -->
+  <script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <!-- App Scripts -->
+  <script src="js/hero3d.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
