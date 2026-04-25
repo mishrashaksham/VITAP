@@ -1,0 +1,56 @@
+{
+  "contacts": [
+    {
+      "id": 1777111926227,
+      "name": "Test User",
+      "email": "test@example.com",
+      "subject": "Test Inquiry",
+      "message": "This is a test message from the website.",
+      "submittedAt": "2026-04-25T10:12:06.227Z"
+    }
+  ],
+  "admissions": [],
+  "newsletter": [],
+  "events": [
+    {
+      "id": 1,
+      "title": "VITEEE 2026 Registration Open",
+      "date": "2026-05-15",
+      "category": "Admissions",
+      "description": "Register now for VIT Engineering Entrance Examination 2026. Last date to apply is May 15, 2026.",
+      "link": "#"
+    },
+    {
+      "id": 2,
+      "title": "International Conference on AI & ML",
+      "date": "2026-06-10",
+      "category": "Conference",
+      "description": "3-day international conference on Artificial Intelligence and Machine Learning applications.",
+      "link": "#"
+    },
+    {
+      "id": 3,
+      "title": "Gravitas 2026 — Technical Festival",
+      "date": "2026-09-20",
+      "category": "Festival",
+      "description": "Annual technical festival featuring hackathons, workshops, guest lectures, and competitions.",
+      "link": "#"
+    },
+    {
+      "id": 4,
+      "title": "Campus Placement Drive — TCS & Infosys",
+      "date": "2026-07-05",
+      "category": "Placements",
+      "description": "On-campus recruitment drive by top IT companies. Pre-register on VTOP portal.",
+      "link": "#"
+    },
+    {
+      "id": 5,
+      "title": "Research Symposium 2026",
+      "date": "2026-08-18",
+      "category": "Research",
+      "description": "Annual research symposium showcasing PhD and faculty research across all schools.",
+      "link": "#"
+    }
+  ]
+}
