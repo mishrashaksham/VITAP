@@ -17,20 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
       message: form.querySelector('#admMessage').value.trim()
     };
 
-    try {
-      const res = await fetch('/api/admissions/inquiry', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-      const result = await res.json();
-      showToast(result.message || result.error, result.success ? 'success' : 'error');
-      if (result.success) form.reset();
-    } catch {
-      showToast('Network error. Please try again.', 'error');
-    } finally {
+    setTimeout(() => {
+      alert("Thank you! Your request has been submitted successfully (Static Demo).");
+      form.reset();
       btn.textContent = original;
       btn.disabled = false;
-    }
+    }, 500);
   });
 });

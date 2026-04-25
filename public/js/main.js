@@ -117,39 +117,30 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── LOAD EVENTS ──
   const eventsContainer = document.getElementById('eventsContainer');
   if (eventsContainer) {
-    fetch('/api/events')
-      .then(r => r.json())
-      .then(data => {
-        if (data.success && data.events.length) {
-          eventsContainer.innerHTML = data.events.map(ev => {
-            const d = new Date(ev.date);
-            const month = d.toLocaleString('en', { month: 'short' }).toUpperCase();
-            const day = d.getDate();
-            return `<div class="event-card fade-up">
-              <div class="event-date"><div class="month">${month}</div><div class="day">${day}</div></div>
-              <div class="event-info"><span class="event-cat">${ev.category}</span><h3>${ev.title}</h3><p>${ev.description}</p></div>
-            </div>`;
-          }).join('');
-          eventsContainer.querySelectorAll('.fade-up').forEach(el => initGSAPAnimation(el, 'fade-up'));
-        }
-      })
-      .catch(() => { eventsContainer.innerHTML = '<p>Unable to load events.</p>'; });
+    const mockEvents = [
+      { title: "VITEEE 2026 Registration Open", date: "2026-05-15", category: "Admissions", description: "Register now for VIT Engineering Entrance Examination 2026. Last date to apply is May 15, 2026." },
+      { title: "International Conference on AI & ML", date: "2026-06-10", category: "Conference", description: "3-day international conference on Artificial Intelligence and Machine Learning applications." },
+      { title: "Gravitas 2026 — Technical Festival", date: "2026-09-20", category: "Festival", description: "Annual technical festival featuring hackathons, workshops, guest lectures, and competitions." }
+    ];
+    eventsContainer.innerHTML = mockEvents.map(ev => {
+      const d = new Date(ev.date);
+      const month = d.toLocaleString('en', { month: 'short' }).toUpperCase();
+      const day = d.getDate();
+      return `<div class="event-card fade-up">
+        <div class="event-date"><div class="month">${month}</div><div class="day">${day}</div></div>
+        <div class="event-info"><span class="event-cat">${ev.category}</span><h3>${ev.title}</h3><p>${ev.description}</p></div>
+      </div>`;
+    }).join('');
+    eventsContainer.querySelectorAll('.fade-up').forEach(el => initGSAPAnimation(el, 'fade-up'));
   }
 
   // ── NEWSLETTER ──
   const nlForm = document.getElementById('newsletterForm');
   if (nlForm) {
-    nlForm.addEventListener('submit', async (e) => {
+    nlForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const email = nlForm.querySelector('input[type="email"]').value;
-      try {
-        const res = await fetch('/api/newsletter', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email })
-        });
-        const data = await res.json();
-        showToast(data.message, data.success ? 'success' : 'error');
-        if (data.success) nlForm.reset();
-      } catch { showToast('Network error. Please try again.', 'error'); }
+      alert("Thank you! Your request has been submitted successfully (Static Demo).");
+      nlForm.reset();
     });
   }
 
